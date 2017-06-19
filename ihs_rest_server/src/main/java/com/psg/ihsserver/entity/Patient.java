@@ -21,7 +21,7 @@ public class Patient implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@Column(name="MRDMCG_ONLINE_REG_NO")
+	@Column(name="MRDMCG_ONLINE_REG_NO", unique = true, nullable = false)
 	private String online_reg_no;
 	@Column(name="MRDMCG_OP_CODE")
 	private String op_code;

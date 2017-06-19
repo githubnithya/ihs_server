@@ -36,10 +36,14 @@
   		<property name="hibernate.c3p0.timeout">300</property>
   		<property name="hibernate.c3p0.max_statements">50</property>
   		<property name="hibernate.c3p0.idle_test_period">3000</property>
+  		<property name="hibernate.c3p0.privilegeSpawnedThreads">true</property>
+		<property name="hibernate.c3p0.contextClassLoaderSource">library</property>
   		
-        <mapping class="com.psgsoftwaretechnologies.ihsserver.entity.Appointment"/>
- 		<mapping class="com.psgsoftwaretechnologies.ihsserver.entity.Patient"/>
- 		<mapping class="com.psgsoftwaretechnologies.ihsserver.entity.User"/>
+        <mapping class="com.psg.ihsserver.entity.Appointment"/>
+        <mapping class="com.psg.ihsserver.entity.Department"/>
+        <mapping class="com.psg.ihsserver.entity.Doctor"/>
+ 		<mapping class="com.psg.ihsserver.entity.Patient"/>
+ 		<mapping class="com.psg.ihsserver.entity.User"/>
  		 
     </session-factory>
 </hibernate-configuration>

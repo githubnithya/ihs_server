@@ -14,24 +14,25 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.google.gson.Gson;
 import com.psg.ihsserver.dao.AppointmentDao;
 import com.psg.ihsserver.dao.PatientDao;
 import com.psg.ihsserver.daoimpl.AppointmentDaoImpl;
 import com.psg.ihsserver.daoimpl.PatientDaoImpl;
 import com.psg.ihsserver.entity.Appointment;
+import com.psg.ihsserver.entity.Department;
 import com.psg.ihsserver.entity.Patient;
 import com.psg.ihsserver.entity.User;
 import com.psg.ihsserver.service.AppointmentService;
+import com.psg.ihsserver.service.DepartmentService;
 import com.psg.ihsserver.service.PatientService;
-
-
-
 
 @Path("/")
 public class IHSRestServer {
 	
 	AppointmentService appService;
 	PatientService pService;
+	DepartmentService deptService;
 	String response;
 	boolean bResponse;
 	
@@ -143,7 +144,7 @@ public class IHSRestServer {
 	@POST
 	@Path("/cancelAppointment")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response cancelAppointment(String online_reg_no, Date app_date)
+	public Response cancelAppointment(@QueryParam("online_reg_no") String online_reg_no, @QueryParam("app_date") Date app_date)
 	{
 		System.out.println("From Server, got Patient" + app_date);
 		java.sql.Date sqlDate = null;
@@ -180,4 +181,22 @@ public class IHSRestServer {
 		System.out.println("Sending Appointment data to client" + appointmentsList.size());
 		return appointmentsList;
 	}
+	
+	@GET
+	@Path("/getAllDepartments")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Department> getAllDepartments()
+	{
+		deptService = new DepartmentService();
+		List<Department> departmentsList = null;
+		
+		departmentsList = deptService.getAllDepartments();
+		System.out.println("Size of department list "+ departmentsList.size());
+		
+		//GensonProvider g
+		
+		System.out.println("Sending departmentsList data to client" + departmentsList.size());
+		return departmentsList;
+	}
+	
 }

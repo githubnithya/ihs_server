@@ -10,8 +10,16 @@
 
 	<artifactId>ihsserver</artifactId>
 	<packaging>war</packaging>
-	<name>ihsserver Maven Webapp</name>
+	<name>ihsserver Maven Webapp</name>	
 	<url>http://maven.apache.org</url>
+	
+	<properties>
+		<jersey2.version>2.19</jersey2.version>
+		<jaxrs.version>2.0.1</jaxrs.version>
+		<spring.security.version>4.2.2.RELEASE</spring.security.version>
+		<springframework.version>4.3.7.RELEASE</springframework.version>
+		<version.com.sun.jersey.contribs>1.19.3</version.com.sun.jersey.contribs>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -19,7 +27,8 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
+		
+		<!--  <dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-server</artifactId>
 			<version>1.9</version>
@@ -29,13 +38,31 @@
 			<artifactId>jersey-core</artifactId>
 			<version>1.9</version>
 		</dependency>
-
-
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-json</artifactId>
 			<version>1.18.1</version>
+		</dependency> -->
+		
+		<!-- JAX-RS -->
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+			<version>${jaxrs.version}</version>
 		</dependency>
+		<!-- Jersey 2.19 -->
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-servlet</artifactId>
+			<version>${jersey2.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-server</artifactId>
+			<version>${jersey2.version}</version>
+		</dependency>
+		
+		
 		<dependency>
 			<groupId>com.owlike</groupId>
 			<artifactId>genson</artifactId>
@@ -49,13 +76,22 @@
 			<version>3.1</version>
 		</dependency>
 
+		
 		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc6</artifactId>
-			<version>12.1.0.1</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/ojdbc6.jar</systemPath>
-		</dependency>
+		    <groupId>oracle</groupId>
+		    <artifactId>ojdbc6</artifactId>
+		    <version>11.2.0.3</version>
+		   </dependency>
+		   
+		   <!-- Added this after getting the following error
+The superclass "javax.servlet.http.HttpServlet" was not found on the Java Build Path	index.jsp   -->
+		   <dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>servlet-api</artifactId>
+    <version>2.5</version>
+    <scope>provided</scope>
+</dependency>
+		   
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -136,6 +172,8 @@
 			<artifactId>gson</artifactId>
 			<version>2.8.0</version>
 		</dependency>
+		
+		
 
 		<!-- Added for unit testing Jax-Rs Webservices -->
 		<dependency>
@@ -162,7 +200,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.4</version>
 				<configuration>
-					<warSourceDirectory>WebContent</warSourceDirectory>
+					<warSourceDirectory>/src/main/webapp</warSourceDirectory>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
