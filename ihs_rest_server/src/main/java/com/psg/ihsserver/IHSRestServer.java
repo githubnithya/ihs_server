@@ -14,11 +14,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.google.gson.Gson;
-import com.psg.ihsserver.dao.AppointmentDao;
-import com.psg.ihsserver.dao.PatientDao;
-import com.psg.ihsserver.daoimpl.AppointmentDaoImpl;
-import com.psg.ihsserver.daoimpl.PatientDaoImpl;
 import com.psg.ihsserver.entity.Appointment;
 import com.psg.ihsserver.entity.Department;
 import com.psg.ihsserver.entity.Patient;
@@ -108,7 +103,20 @@ public class IHSRestServer {
 		pService = new PatientService();
 		Patient patient = pService.getPatient(online_reg_no);
 		
+		
 		System.out.println("Sending Patient data to client" + patient.getPatient_name());
+		return patient;
+	}
+	
+	@GET
+	@Path("/getPatientByOpCode")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Patient getPatientByOpCode(@QueryParam("op_code") String op_code)
+	{
+		pService = new PatientService();
+		Patient patient = pService.getPatientByOpCode(op_code);
+		
+		System.out.println("Sending Patient data to client");
 		return patient;
 	}
 	
@@ -140,7 +148,7 @@ public class IHSRestServer {
 			response = "Appointment booked";
 		return Response.status(201).entity(response).build();
 	}
-	
+	//TODO Change Date param to String
 	@POST
 	@Path("/cancelAppointment")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -193,10 +201,26 @@ public class IHSRestServer {
 		departmentsList = deptService.getAllDepartments();
 		System.out.println("Size of department list "+ departmentsList.size());
 		
-		//GensonProvider g
-		
 		System.out.println("Sending departmentsList data to client" + departmentsList.size());
 		return departmentsList;
 	}
+	
+	
+	@GET
+	@Path("/getPatientByDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Patient getPatientByDetails(@QueryParam("patient_name") String patient_name, @QueryParam("dob") String dob, @QueryParam("mobile_no") String mobile_no)
+	{
+		pService = new PatientService();
+		Patient pByDetails = pService.getPatientByDetails(patient_name, dob, mobile_no);
+		
+		System.out.println("dob in time " +pByDetails.getDob().getTime());
+		return pByDetails;
+	}
+	/**
+	 * Tried with BeanParam, but doesnt work for Date.
+	 * Need to create a custom DateParam type for this - Ref- https://softwareengineering.stackexchange.com/questions/138391/should-i-use-the-date-type-in-jax-rs-pathparam
+	 */
+
 	
 }

@@ -11,6 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+
+
 @Entity
 @Table(name="PATIENT_REGISTRATION")
 public class Patient implements Serializable{
@@ -26,10 +28,12 @@ public class Patient implements Serializable{
 	@Column(name="MRDMCG_OP_CODE")
 	private String op_code;
 	@Column(name="MRDMCG_PATIENT_NAME")
+	
 	private String patient_name;
 	@Column(name="MRDMCG_SEX")
 	private String sex;
 	@Column(name="MRDMCG_DOB")
+	
 	private Date dob;
 	@Column(name="MRDMCG_MARITAL_STATUS")
 	private String marital_status;
@@ -50,6 +54,7 @@ public class Patient implements Serializable{
 	@Column(name="MRDMCG_PHONE")
 	private BigInteger phone;
 	@Column(name="MRDMCG_MOBILE_NO")
+	
 	private BigInteger mobile_no;
 	@Column(name="MRDMCG_MAIL_ID")
 	private String mail_id;

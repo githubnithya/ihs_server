@@ -11,14 +11,14 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
-public class DateDeserializer implements JsonDeserializer<Date> {
+public class DateDeserializer implements JsonDeserializer {
 
 	@Override
 	public Date deserialize(JsonElement arg0, Type arg1,
 			JsonDeserializationContext arg2) throws JsonParseException {
 			String date = arg0.getAsString();
 		
-		SimpleDateFormat formatter = new SimpleDateFormat("M/d/yy hh:mm a");
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		formatter.setTimeZone(TimeZone.getTimeZone("IST"));
 		
 		try {

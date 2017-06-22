@@ -5,6 +5,7 @@ import static com.jayway.restassured.RestAssured.given;
 import org.junit.Test;
 
 import com.psg.ihsserver.entity.Appointment;
+import com.psg.ihsserver.util.Utils;
 
 
 
