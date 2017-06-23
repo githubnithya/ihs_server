@@ -255,9 +255,6 @@ public class IHSRestServer {
 	public String getAuthToken()
 	{
 		String authToken = null;
-		
-		
-		
 		return authService.getAuthToken();
 	}
 	

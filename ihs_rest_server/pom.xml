@@ -19,6 +19,7 @@
 		<spring.security.version>4.2.2.RELEASE</spring.security.version>
 		<springframework.version>4.3.7.RELEASE</springframework.version>
 		<version.com.sun.jersey.contribs>1.19.3</version.com.sun.jersey.contribs>
+		<oltu.version>1.0.1</oltu.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -189,6 +190,49 @@ The superclass "javax.servlet.http.HttpServlet" was not found on the Java Build 
 			<version>2.9.0</version>
 			<scope>test</scope>
 		</dependency>
+		
+		<!--  Apache Oltu Dependencies -->
+		<dependency>
+      <groupId>org.apache.oltu.oauth2</groupId>
+      <artifactId>org.apache.oltu.oauth2.common</artifactId>
+      <version>${oltu.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.oltu.oauth2</groupId>
+      <artifactId>org.apache.oltu.oauth2.client</artifactId>
+      <version>${oltu.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.oltu.oauth2</groupId>
+      <artifactId>org.apache.oltu.oauth2.authzserver</artifactId>
+      <version>${oltu.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.oltu.oauth2</groupId>
+      <artifactId>org.apache.oltu.oauth2.httpclient4</artifactId>
+      <version>${oltu.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.oltu.oauth2</groupId>
+      <artifactId>org.apache.oltu.oauth2.resourceserver</artifactId>
+      <version>${oltu.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.oltu.oauth2</groupId>
+      <artifactId>org.apache.oltu.oauth2.dynamicreg.client</artifactId>
+      <version>${oltu.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.oltu.oauth2</groupId>
+      <artifactId>org.apache.oltu.oauth2.dynamicreg.server</artifactId>
+      <version>${oltu.version}</version>
+    </dependency>	  
 	</dependencies>
 
 	<build>

@@ -19,6 +19,7 @@ import com.psg.ihsserver.util.*;
 
 public class PatientDaoImpl implements PatientDao {
 
+	private final String TAG = "PatientDaoImpl";
 	private SessionFactory sf;
 	private Utils util;
 	private static final Logger logger = Logger.getLogger(PatientDaoImpl.class);
@@ -78,6 +79,39 @@ public class PatientDaoImpl implements PatientDao {
 		return patientByOpcode;
 	}
 	
+	@Override
+	public String isPatient(String op_code) 
+	{
+		String mobile_no = null;
+		Session session = null;
+		Patient patientByOpcode = null;
+		sf = HibernateUtil.getSessionFactory();
+		
+		System.out.println("op_code "+ op_code);
+		try
+		{
+			session = sf.openSession();
+			session.beginTransaction();
+			Criteria criteria = session.createCriteria(Patient.class);
+			patientByOpcode = (Patient) criteria.add(Restrictions.eq("op_code", op_code))
+												.uniqueResult();
+			if(null != patientByOpcode)
+				{
+					logger.debug(TAG + "In isPatient - Patient Active " + patientByOpcode.getPatient_name());
+					mobile_no = patientByOpcode.getMobile_no().toString();
+				}
+			session.getTransaction().commit();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			session.close();
+		}
+		return mobile_no;
+	}
 	@Override
 	public boolean insertNewPatient(Patient patient) 
 	{
@@ -142,14 +176,12 @@ public class PatientDaoImpl implements PatientDao {
 		sf = HibernateUtil.getSessionFactory();
 		
 		java.sql.Date sql_dob = Utils.generateSQLDate(dob);
-		
-		
 		try
 		{
 			session = sf.openSession();
 			session.beginTransaction();
 			Criteria criteria = session.createCriteria(Patient.class);
-			patientByDetails = (Patient) criteria.add(Restrictions.eq("patient_name", patient_name))
+			patientByDetails = (Patient) criteria.add(Restrictions.eq("patient_name", patient_name).ignoreCase())
 					.add(Restrictions.eq("dob", sql_dob))
 					.add(Restrictions.eq("mobile_no", new BigInteger(mobile_no)))
 					.uniqueResult();
@@ -167,4 +199,43 @@ public class PatientDaoImpl implements PatientDao {
 		return patientByDetails;
 	}
 
+	@Override
+	public String forgotOpCode(String patient_name, String dob, String mobile_no) {
+		Session session = null;
+		Patient patientByDetails = null;
+		String op_code = null;
+		if(logger.isDebugEnabled()) 
+			System.out.println("getPatientByDetails - Name = "+ patient_name + " D0B = " + dob + " Mobile No " + mobile_no
+					+ "\n" + new BigInteger(mobile_no).longValue());
+		
+		sf = HibernateUtil.getSessionFactory();
+		
+		java.sql.Date sql_dob = Utils.generateSQLDate(dob);
+		try
+		{
+			session = sf.openSession();
+			session.beginTransaction();
+			Criteria criteria = session.createCriteria(Patient.class);
+			patientByDetails = (Patient) criteria.add(Restrictions.eq("patient_name", patient_name).ignoreCase())
+					.add(Restrictions.eq("dob", sql_dob))
+					.add(Restrictions.eq("mobile_no", new BigInteger(mobile_no)))
+					.uniqueResult();
+			if(null != patientByDetails)
+				{
+				op_code = patientByDetails.getOp_code();
+				logger.debug(TAG + "In forgotOpCode - " + op_code);
+				}
+			
+			session.getTransaction().commit();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			session.close();
+		}
+		return op_code;
+	}
 }
