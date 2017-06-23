@@ -22,6 +22,17 @@ public class PatientService {
 		return pDao.getPatientByOpCode(op_code);
 	}
 	
+	public String isPatient(String op_code)
+	{
+		pDao = new PatientDaoImpl();
+		return pDao.isPatient(op_code);
+	}
+	public String forgotOpCode(String patient_name, String dob, String mobile_no)
+	{
+		pDao = new PatientDaoImpl();
+		return pDao.forgotOpCode(patient_name, dob, mobile_no);
+	}
+	
 	public boolean insertNewPatient(Patient patient)
 	{
 		pDao = new PatientDaoImpl();

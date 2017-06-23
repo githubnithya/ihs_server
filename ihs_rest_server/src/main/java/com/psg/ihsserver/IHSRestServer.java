@@ -19,6 +19,7 @@ import com.psg.ihsserver.entity.Department;
 import com.psg.ihsserver.entity.Patient;
 import com.psg.ihsserver.entity.User;
 import com.psg.ihsserver.service.AppointmentService;
+import com.psg.ihsserver.service.AuthenticationService;
 import com.psg.ihsserver.service.DepartmentService;
 import com.psg.ihsserver.service.PatientService;
 
@@ -30,6 +31,7 @@ public class IHSRestServer {
 	DepartmentService deptService;
 	String response;
 	boolean bResponse;
+	AuthenticationService authService;
 	
 	
 	@GET
@@ -221,6 +223,51 @@ public class IHSRestServer {
 	 * Tried with BeanParam, but doesnt work for Date.
 	 * Need to create a custom DateParam type for this - Ref- https://softwareengineering.stackexchange.com/questions/138391/should-i-use-the-date-type-in-jax-rs-pathparam
 	 */
-
 	
+	
+	@GET
+	@Path("/forgotOpCode")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String forgotOpCode(@QueryParam("patient_name") String patient_name, @QueryParam("dob") String dob, @QueryParam("mobile_no") String mobile_no)
+	{
+		pService = new PatientService();
+		String opcode = pService.forgotOpCode(patient_name, dob, mobile_no);
+		
+		System.out.println("dob in time " +opcode);
+		return opcode;
+	}
+	
+	@GET
+	@Path("/isPatient")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String isPatient(@QueryParam("op_code") String op_code)
+	{
+		pService = new PatientService();
+		
+		
+		System.out.println("Sending Patient data to client");
+		return pService.isPatient(op_code);
+	}
+
+	@GET
+	@Path("/getAuthToken")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getAuthToken()
+	{
+		String authToken = null;
+		
+		
+		
+		return authService.getAuthToken();
+	}
+	
+	
+	@GET
+	@Path("/patientSignIn")
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean patientSignIn()
+	{
+		
+		return false;
+	}
 }

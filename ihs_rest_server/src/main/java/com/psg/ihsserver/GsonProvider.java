@@ -52,9 +52,10 @@ public class GsonProvider implements MessageBodyWriter<Object>, MessageBodyReade
 			   
 				});
 	    gson = gsonBuilder
-	    		.setDateFormat("dd-MM-yyyy")
+	    		//.setDateFormat("dd-MM-yyyy")
 	    		.create();
 	    
+	    System.out.println("Created GsonProvider");
 	  }
 	  
 	@Override

@@ -28,8 +28,9 @@ public class Patient implements Serializable{
 	@Column(name="MRDMCG_OP_CODE")
 	private String op_code;
 	@Column(name="MRDMCG_PATIENT_NAME")
-	
 	private String patient_name;
+	@Column(name="MRDMCG_PWD")
+	private String patient_pwd;
 	@Column(name="MRDMCG_SEX")
 	private String sex;
 	@Column(name="MRDMCG_DOB")
@@ -93,6 +94,17 @@ public class Patient implements Serializable{
 	public void setPatient_name(String patient_name) {
 		this.patient_name = patient_name;
 	}
+	
+	public String getPatient_pwd() {
+		return patient_pwd;
+	}
+
+
+	public void setPatient_pwd(String patient_pwd) {
+		this.patient_pwd = patient_pwd;
+	}
+
+
 	public String getSex() {
 		return sex;
 	}

@@ -13,6 +13,7 @@ public class IHSApplication extends ResourceConfig {
 		this.packages("com.pgs.ihsserver");
 		this.register(LoggingFilter.class);
 		this.register("GsonProvider.class");
+		this.register(new IHSApplicationBinder());
 	}
 
 }
