@@ -5,19 +5,25 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 
 import com.psg.ihsserver.entity.Appointment;
 import com.psg.ihsserver.entity.Department;
 import com.psg.ihsserver.entity.Patient;
 import com.psg.ihsserver.entity.User;
+import com.psg.ihsserver.oauth2.ResourceEndPoint;
+import com.psg.ihsserver.oauth2.Secured;
 import com.psg.ihsserver.service.AppointmentService;
 import com.psg.ihsserver.service.AuthenticationService;
 import com.psg.ihsserver.service.DepartmentService;
@@ -32,6 +38,9 @@ public class IHSRestServer {
 	String response;
 	boolean bResponse;
 	AuthenticationService authService;
+	
+	@Context
+	HttpServletRequest request;
 	
 	
 	@GET
@@ -67,7 +76,6 @@ public class IHSRestServer {
 		System.out.println("From Server, got Patient" +patient.getPatient_name());
 		pService = new PatientService();
 		boolean booleanResponse= pService.insertNewPatient(patient);
-		
 		if(booleanResponse)
 			response = "Patient Saved";
 		
@@ -117,6 +125,7 @@ public class IHSRestServer {
 	{
 		pService = new PatientService();
 		Patient patient = pService.getPatientByOpCode(op_code);
+		
 		
 		System.out.println("Sending Patient data to client");
 		return patient;
@@ -237,11 +246,21 @@ public class IHSRestServer {
 		return opcode;
 	}
 	
+
 	@GET
+	@Secured
 	@Path("/isPatient")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String isPatient(@QueryParam("op_code") String op_code)
 	{
+		
+		ResourceEndPoint rp = new ResourceEndPoint();
+		try {
+		   Response response = rp.validateToken(request);
+		} catch (OAuthSystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		pService = new PatientService();
 		
 		

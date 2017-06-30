@@ -93,7 +93,7 @@ public class PatientDaoImpl implements PatientDao {
 			session = sf.openSession();
 			session.beginTransaction();
 			Criteria criteria = session.createCriteria(Patient.class);
-			patientByOpcode = (Patient) criteria.add(Restrictions.eq("op_code", op_code))
+			patientByOpcode = (Patient) criteria.add(Restrictions.eq("op_code", op_code).ignoreCase())
 												.uniqueResult();
 			if(null != patientByOpcode)
 				{

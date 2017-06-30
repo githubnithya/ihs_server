@@ -1,12 +1,16 @@
 package com.psg.ihsserver.oauth2;
 
+import javax.annotation.Priority;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Priorities;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.Provider;
 
 import org.apache.oltu.oauth2.common.OAuth;
 import org.apache.oltu.oauth2.common.error.OAuthError;
@@ -27,14 +31,19 @@ import com.psg.ihsserver.util.Strings;
  * @author ADMIN
  *
  */
-@Path("/resource")
+
 public class ResourceEndPoint {
 
 	@GET
-    @Produces("text/html")
+	@Produces(MediaType.APPLICATION_JSON)
     public Response get(@Context HttpServletRequest request) throws OAuthSystemException {
+			
+		return validateToken(request);        
+    }
 
-        try {
+	public static Response validateToken(@Context HttpServletRequest request) throws OAuthSystemException
+	{
+		try {
 
             // Make the OAuth Request out of this request
             OAuthAccessResourceRequest oauthRequest = new OAuthAccessResourceRequest(request,
@@ -95,7 +104,6 @@ public class ResourceEndPoint {
                     oauthResponse.getHeader(OAuth.HeaderType.WWW_AUTHENTICATE))
                 .build();
         }
-    }
-
+	}
 	
 }

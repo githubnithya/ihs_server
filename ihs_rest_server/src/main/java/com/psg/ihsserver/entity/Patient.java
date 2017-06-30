@@ -2,8 +2,7 @@ package com.psg.ihsserver.entity;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-
-
+import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -34,7 +33,6 @@ public class Patient implements Serializable{
 	@Column(name="MRDMCG_SEX")
 	private String sex;
 	@Column(name="MRDMCG_DOB")
-	
 	private Date dob;
 	@Column(name="MRDMCG_MARITAL_STATUS")
 	private String marital_status;
@@ -55,7 +53,6 @@ public class Patient implements Serializable{
 	@Column(name="MRDMCG_PHONE")
 	private BigInteger phone;
 	@Column(name="MRDMCG_MOBILE_NO")
-	
 	private BigInteger mobile_no;
 	@Column(name="MRDMCG_MAIL_ID")
 	private String mail_id;
@@ -69,6 +66,9 @@ public class Patient implements Serializable{
 	private BigInteger dependent_aadhaar_no;
 	@Column(name="MRDMCG_DIV_CODE")
 	private String div_code;
+	
+	
+	
 	
 	
 	public Patient() {
@@ -213,6 +213,7 @@ public class Patient implements Serializable{
 	public void setDiv_code(String div_code) {
 		this.div_code = div_code;
 	}
+	
 	
 	@Override
 	public String toString()
