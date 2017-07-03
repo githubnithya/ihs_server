@@ -10,9 +10,9 @@
 
 	<artifactId>ihsserver</artifactId>
 	<packaging>war</packaging>
-	<name>ihsserver Maven Webapp</name>	
+	<name>ihsserver Maven Webapp</name>
 	<url>http://maven.apache.org</url>
-	
+
 	<properties>
 		<jersey2.version>2.19</jersey2.version>
 		<jaxrs.version>2.0.1</jaxrs.version>
@@ -28,23 +28,13 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
-		
-		<!--  <dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-server</artifactId>
-			<version>1.9</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-core</artifactId>
-			<version>1.9</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-json</artifactId>
-			<version>1.18.1</version>
-		</dependency> -->
-		
+
+		<!-- <dependency> <groupId>com.sun.jersey</groupId> <artifactId>jersey-server</artifactId> 
+			<version>1.9</version> </dependency> <dependency> <groupId>com.sun.jersey</groupId> 
+			<artifactId>jersey-core</artifactId> <version>1.9</version> </dependency> 
+			<dependency> <groupId>com.sun.jersey</groupId> <artifactId>jersey-json</artifactId> 
+			<version>1.18.1</version> </dependency> -->
+
 		<!-- JAX-RS -->
 		<dependency>
 			<groupId>javax.ws.rs</groupId>
@@ -62,8 +52,8 @@
 			<artifactId>jersey-server</artifactId>
 			<version>${jersey2.version}</version>
 		</dependency>
-		
-		
+
+
 		<dependency>
 			<groupId>com.owlike</groupId>
 			<artifactId>genson</artifactId>
@@ -77,22 +67,40 @@
 			<version>3.1</version>
 		</dependency>
 
-		
+
 		<dependency>
-		    <groupId>oracle</groupId>
-		    <artifactId>ojdbc6</artifactId>
-		    <version>11.2.0.3</version>
-		   </dependency>
-		   
-		   <!-- Added this after getting the following error
-The superclass "javax.servlet.http.HttpServlet" was not found on the Java Build Path	index.jsp   -->
-		   <dependency>
-    <groupId>javax.servlet</groupId>
-    <artifactId>servlet-api</artifactId>
-    <version>2.5</version>
-    <scope>provided</scope>
-</dependency>
-		   
+			<groupId>oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<version>11.2.0.3</version>
+		</dependency>
+
+		<!-- Added this after getting the following error The superclass "javax.servlet.http.HttpServlet" 
+			was not found on the Java Build Path index.jsp -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.jaxrs</groupId>
+			<artifactId>jackson-jaxrs-json-provider</artifactId>
+			<version>2.8.9</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.8.9</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.8.9</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -173,8 +181,8 @@ The superclass "javax.servlet.http.HttpServlet" was not found on the Java Build 
 			<artifactId>gson</artifactId>
 			<version>2.8.0</version>
 		</dependency>
-		
-		
+
+
 
 		<!-- Added for unit testing Jax-Rs Webservices -->
 		<dependency>
@@ -190,49 +198,49 @@ The superclass "javax.servlet.http.HttpServlet" was not found on the Java Build 
 			<version>2.9.0</version>
 			<scope>test</scope>
 		</dependency>
-		
-		<!--  Apache Oltu Dependencies -->
+
+		<!-- Apache Oltu Dependencies -->
 		<dependency>
-      <groupId>org.apache.oltu.oauth2</groupId>
-      <artifactId>org.apache.oltu.oauth2.common</artifactId>
-      <version>${oltu.version}</version>
-    </dependency>
+			<groupId>org.apache.oltu.oauth2</groupId>
+			<artifactId>org.apache.oltu.oauth2.common</artifactId>
+			<version>${oltu.version}</version>
+		</dependency>
 
-    <dependency>
-      <groupId>org.apache.oltu.oauth2</groupId>
-      <artifactId>org.apache.oltu.oauth2.client</artifactId>
-      <version>${oltu.version}</version>
-    </dependency>
+		<dependency>
+			<groupId>org.apache.oltu.oauth2</groupId>
+			<artifactId>org.apache.oltu.oauth2.client</artifactId>
+			<version>${oltu.version}</version>
+		</dependency>
 
-    <dependency>
-      <groupId>org.apache.oltu.oauth2</groupId>
-      <artifactId>org.apache.oltu.oauth2.authzserver</artifactId>
-      <version>${oltu.version}</version>
-    </dependency>
+		<dependency>
+			<groupId>org.apache.oltu.oauth2</groupId>
+			<artifactId>org.apache.oltu.oauth2.authzserver</artifactId>
+			<version>${oltu.version}</version>
+		</dependency>
 
-    <dependency>
-      <groupId>org.apache.oltu.oauth2</groupId>
-      <artifactId>org.apache.oltu.oauth2.httpclient4</artifactId>
-      <version>${oltu.version}</version>
-    </dependency>
+		<dependency>
+			<groupId>org.apache.oltu.oauth2</groupId>
+			<artifactId>org.apache.oltu.oauth2.httpclient4</artifactId>
+			<version>${oltu.version}</version>
+		</dependency>
 
-    <dependency>
-      <groupId>org.apache.oltu.oauth2</groupId>
-      <artifactId>org.apache.oltu.oauth2.resourceserver</artifactId>
-      <version>${oltu.version}</version>
-    </dependency>
+		<dependency>
+			<groupId>org.apache.oltu.oauth2</groupId>
+			<artifactId>org.apache.oltu.oauth2.resourceserver</artifactId>
+			<version>${oltu.version}</version>
+		</dependency>
 
-    <dependency>
-      <groupId>org.apache.oltu.oauth2</groupId>
-      <artifactId>org.apache.oltu.oauth2.dynamicreg.client</artifactId>
-      <version>${oltu.version}</version>
-    </dependency>
+		<dependency>
+			<groupId>org.apache.oltu.oauth2</groupId>
+			<artifactId>org.apache.oltu.oauth2.dynamicreg.client</artifactId>
+			<version>${oltu.version}</version>
+		</dependency>
 
-    <dependency>
-      <groupId>org.apache.oltu.oauth2</groupId>
-      <artifactId>org.apache.oltu.oauth2.dynamicreg.server</artifactId>
-      <version>${oltu.version}</version>
-    </dependency>	  
+		<dependency>
+			<groupId>org.apache.oltu.oauth2</groupId>
+			<artifactId>org.apache.oltu.oauth2.dynamicreg.server</artifactId>
+			<version>${oltu.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>

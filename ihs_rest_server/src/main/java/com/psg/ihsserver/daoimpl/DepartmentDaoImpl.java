@@ -8,18 +8,16 @@ import org.hibernate.SessionFactory;
 
 import com.psg.ihsserver.dao.DepartmentDao;
 import com.psg.ihsserver.dao.DoctorDao;
-import com.psg.ihsserver.entity.Appointment;
 import com.psg.ihsserver.entity.Department;
 import com.psg.ihsserver.entity.Doctor;
 import com.psg.ihsserver.util.HibernateUtil;
-
-import oracle.net.aso.l;
 
 public class DepartmentDaoImpl implements DepartmentDao{
 
 	DoctorDao docDao;
 	SessionFactory sf;
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Department> getAllDepartments() {
 		Session session = null;
