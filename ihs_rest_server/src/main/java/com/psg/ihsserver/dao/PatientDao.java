@@ -13,5 +13,7 @@ public interface PatientDao {
 	public boolean deletePatient(Patient patient);
 	public Patient getPatientByDetails(String patient_name, String dob, String mobile_no);
 	public String forgotOpCode(String patient_name, String dob, String mobile_no);
+	public Patient login(String op_code, String password);
+	public Boolean updateNewP(String op_code, String password);
 	
 }

@@ -5,6 +5,7 @@ package com.psg.ihsserver.service;
 import com.psg.ihsserver.dao.PatientDao;
 import com.psg.ihsserver.daoimpl.PatientDaoImpl;
 import com.psg.ihsserver.entity.Patient;
+import com.psg.ihsserver.util.Utils;
 
 
 public class PatientService {
@@ -33,6 +34,19 @@ public class PatientService {
 		return pDao.forgotOpCode(patient_name, dob, mobile_no);
 	}
 	
+	public Boolean forgotPwd(String opCode)
+	{
+		pDao = new PatientDaoImpl();
+		String mobileNo = pDao.isPatient(opCode);
+		if(null != mobileNo && Utils.mobileNoValidator(mobileNo))
+		{
+			//TODO Send OTP by SMS
+			return true;
+		}
+		else
+			return false;
+	}
+	
 	public boolean insertNewPatient(Patient patient)
 	{
 		pDao = new PatientDaoImpl();
@@ -51,5 +65,15 @@ public class PatientService {
 	public Patient getPatientByDetails(String patient_name, String dob, String mobile_no) {
 		pDao = new PatientDaoImpl();
 		return pDao.getPatientByDetails(patient_name, dob, mobile_no);
+	}
+	public Patient login(String op_code, String password)
+	{
+		pDao = new PatientDaoImpl();
+		return pDao.login(op_code, password);
+	}
+	public Boolean updateNewP(String op_code, String password)
+	{
+		pDao = new PatientDaoImpl();
+		return pDao.updateNewP(op_code, password);
 	}
 }

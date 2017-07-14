@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 @Entity
@@ -26,6 +27,9 @@ public class Doctor implements Serializable{
 	@Column(name="MRDMCG_DOC_NAME")
 	private String doc_name;
 	
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "MRDTCG_CONS_DEPT", nullable = false)
 	private Department department;
 	
 	
@@ -41,14 +45,14 @@ public class Doctor implements Serializable{
 	public void setDoc_name(String doc_name) {
 		this.doc_name = doc_name;
 	}
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "MRDMCG_CONS_DEPT", nullable = false)
+	
 	public Department getDepartment() {
 		return department;
 	}
 	public void setDepartment(Department department) {
 		this.department = department;
 	}
+	
 	
 	
 	@Override

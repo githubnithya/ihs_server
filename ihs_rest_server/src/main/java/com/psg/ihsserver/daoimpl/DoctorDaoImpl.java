@@ -28,8 +28,39 @@ public class DoctorDaoImpl implements DoctorDao{
 			session = sf.openSession();
 			session.beginTransaction();
 			Criteria criteria = session.createCriteria(Doctor.class);
-			criteria.add(Restrictions.eq("department",dept_no));
+			criteria.add(Restrictions.eq("department.dept_no",dept_no));
 			docList = criteria.list();
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			session.close();
+		}
+		return docList;
+	}
+	
+	@Override
+	public List<Doctor> getAllDoctors() {
+		Session session = null;
+		List<Doctor> docList = null;
+		sf = HibernateUtil.getSessionFactory();
+		
+		try
+		{
+			session = sf.openSession();
+			session.beginTransaction();
+			Criteria criteria = session.createCriteria(Doctor.class);
+			
+			docList = criteria.list();
+			
+			for(Doctor doc: docList)
+			{
+				System.out.println("doc's dept " + doc.getDepartment().getDept_no());
+			}
 			
 		}
 		catch(Exception e)

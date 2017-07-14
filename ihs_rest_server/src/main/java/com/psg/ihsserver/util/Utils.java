@@ -1,10 +1,12 @@
 package com.psg.ihsserver.util;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.TimeZone;
+import java.util.regex.Pattern;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -16,7 +18,10 @@ import javax.xml.bind.DatatypeConverter;
 
 import org.apache.log4j.Logger;
 
+import com.psg.ihsserver.bean.DepartmentBean;
+import com.psg.ihsserver.bean.DoctorBean;
 import com.psg.ihsserver.daoimpl.PatientDaoImpl;
+import com.psg.ihsserver.entity.Doctor;
 
 public class Utils {
 
@@ -42,6 +47,54 @@ public class Utils {
 		return sqlDOB;
 	}
 
+	public static Date generateSQLDateTime(String dateStr) {
+		if (logger.isDebugEnabled())
+			logger.debug("generateSQLDate from " + dateStr);
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+		formatter.setTimeZone(TimeZone.getTimeZone("IST"));
+		java.util.Date date;
+		java.sql.Date sqlDOB = null;
+		try {
+			date = formatter.parse(dateStr);
+			sqlDOB = new java.sql.Date(date.getTime());
+			
+
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return sqlDOB;
+	}
+	
+	public static String changeTSFormat(Timestamp timeSt) {
+	       
+        SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+        formatter2.setTimeZone(TimeZone.getTimeZone("IST"));
+       
+        String strDate = formatter2.format(timeSt);
+
+        return strDate;
+    }
+    
+    public static Long generateSQLTimeStamp(String dateStr) {
+		
+		 SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+		formatter2.setTimeZone(TimeZone.getTimeZone("IST"));
+		java.util.Date date = null;
+		Timestamp ts = null;
+		try {
+			date = formatter2.parse(dateStr);
+			System.out.println("date.getTime() " + date.getTime());
+//			ts = new Timestamp(date.getTime());
+			
+			
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return date.getTime();
+	}
 	public static Date generateSQLDate(java.util.Date utilDate) {
 		if (logger.isDebugEnabled())
 			logger.debug("generateSQLDate from " + utilDate);
@@ -62,6 +115,26 @@ public class Utils {
 		return sqlDOB;
 	}
 
+	public static java.util.Date generateUtilDate(java.sql.Timestamp ts)
+	{
+		
+		return new java.util.Date(ts.getTime());
+		
+	}
+	
+	public static java.util.Date generateUtilDate(String str)
+	{
+		
+		SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		java.util.Date date = null;
+		try {
+			date = formatter2.parse(str);
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return date;
+	}
 	static String encrypt(String value) {
 		String encryptedtext = null;
 		try {
@@ -107,4 +180,32 @@ public class Utils {
 	{
 		return Base64.getEncoder().encodeToString(new String(Strings.CLIENT_ID + ":" +Strings.CLIENT_SECRET).getBytes());
 	}
+	
+	public static DoctorBean convertToBean(Doctor doctor)
+	{
+		DepartmentBean dept = new DepartmentBean(doctor.getDepartment().getDept_no(), doctor.getDepartment().getDept_name());
+		
+		DoctorBean doc = new DoctorBean(doctor.getDoc_no(), doctor.getDoc_name(), dept);
+		return doc;
+		
+	}
+	
+	public static boolean mobileNoValidator(String mobileNo) {
+       
+        boolean check = false;
+        //String mobileNo = editText.getText().toString();
+        if (Pattern.matches("[2-9]{2}\\d{8}", mobileNo)) {
+//            if (mobileNo.length() != 10) {
+//                check = false;
+//                // editText.setError(BaseApplication.getContext().getResources().getSystem().getString(R.string.valErr_invalid_mobile_no));
+//            } else {
+//                check = true;
+//            }
+            
+            check = true;
+        } else {
+            check = false;
+        }
+        return check;
+    }
 }

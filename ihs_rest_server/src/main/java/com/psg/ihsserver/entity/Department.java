@@ -42,12 +42,15 @@ public class Department implements Serializable {
 		this.doctorsList = doctorsList;
 	}
 
+	
 	public Long getDept_no() {
 		return dept_no;
 	}
+
 	public void setDept_no(Long dept_no) {
 		this.dept_no = dept_no;
 	}
+
 	public String getDept_name() {
 		return dept_name;
 	}

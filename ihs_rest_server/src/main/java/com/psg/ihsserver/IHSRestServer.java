@@ -2,11 +2,13 @@ package com.psg.ihsserver;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -18,8 +20,10 @@ import javax.ws.rs.core.Response;
 
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 
+import com.psg.ihsserver.bean.DoctorBean;
 import com.psg.ihsserver.entity.Appointment;
 import com.psg.ihsserver.entity.Department;
+import com.psg.ihsserver.entity.Doctor;
 import com.psg.ihsserver.entity.Patient;
 import com.psg.ihsserver.entity.User;
 import com.psg.ihsserver.oauth2.ResourceEndPoint;
@@ -27,8 +31,16 @@ import com.psg.ihsserver.oauth2.Secured;
 import com.psg.ihsserver.service.AppointmentService;
 import com.psg.ihsserver.service.AuthenticationService;
 import com.psg.ihsserver.service.DepartmentService;
+import com.psg.ihsserver.service.DoctorService;
 import com.psg.ihsserver.service.PatientService;
+import com.psg.ihsserver.service.UpdatesService;
 
+
+/**
+ * Authorization Bearer U1NncFdkdzVTU2dwV2R3Nl9JRDpTU2dwV2R3NVNTZ3BXZHc2X1NFS1JFVA==
+ * @author Dhiviya Devarajan
+ *
+ */
 @Path("/")
 public class IHSRestServer {
 	
@@ -38,6 +50,8 @@ public class IHSRestServer {
 	String response;
 	boolean bResponse;
 	AuthenticationService authService;
+	UpdatesService uService;
+	DoctorService docService;
 	
 	@Context
 	HttpServletRequest request;
@@ -160,6 +174,7 @@ public class IHSRestServer {
 		return Response.status(201).entity(response).build();
 	}
 	//TODO Change Date param to String
+	
 	@POST
 	@Path("/cancelAppointment")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -216,6 +231,18 @@ public class IHSRestServer {
 		return departmentsList;
 	}
 	
+	@GET
+	
+	@Path("/getAllDoctors")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<DoctorBean> getAllDoctors()
+	{
+		docService = new DoctorService();
+		List<DoctorBean> docs = new ArrayList<>();
+		docs = docService.getAllDoctors();
+		System.out.println("Sending " + docs.size() + " to app ");
+		return docs;
+	}
 	
 	@GET
 	@Path("/getPatientByDetails")
@@ -246,7 +273,27 @@ public class IHSRestServer {
 		return opcode;
 	}
 	
-
+	@GET
+	@Path("/forgotPwdOP")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Boolean forgotPwd(@QueryParam("opCode") String opCode)
+	{
+		pService = new PatientService();
+		
+		return pService.forgotPwd(opCode);
+	}
+	@GET
+	@Path("/forgotPwd")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Boolean forgotPwd(@QueryParam("patient_name") String patient_name, @QueryParam("dob") String dob, @QueryParam("mobile_no") String mobile_no)
+	{
+		pService = new PatientService();
+		String opcode = pService.forgotOpCode(patient_name, dob, mobile_no);
+		if(null != opcode)
+			return true;
+		else
+			return false;
+	}
 	@GET
 	@Secured
 	@Path("/isPatient")
@@ -263,11 +310,26 @@ public class IHSRestServer {
 		}
 		pService = new PatientService();
 		
-		
 		System.out.println("Sending Patient data to client");
 		return pService.isPatient(op_code);
 	}
 
+	@POST
+	@Secured
+	@Path("/login")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Patient login(@FormParam("op_code") String opCode,
+            @FormParam("password") String password)
+	{
+		System.out.println(opCode+password);
+		pService = new PatientService();
+		Patient patientLogin = pService.login(opCode, password);
+		
+		System.out.println("opCode  " +opCode);
+		return patientLogin;
+		
+	}
+	
 	@GET
 	@Path("/getAuthToken")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -283,7 +345,35 @@ public class IHSRestServer {
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean patientSignIn()
 	{
-		
 		return false;
 	}
+	
+	@GET
+	@Secured
+	@Path("/deptDocToBeUpdated")
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean deptDocSync(@QueryParam(value = "lastUpdated") String lastUpdated)
+	{
+		System.out.println("lastUpdated " + lastUpdated);
+		uService = new UpdatesService();
+		boolean bool = uService.checkLastUpdated(lastUpdated);
+		System.out.println( "deptDocSync "+ bool);
+		return bool;
+	}
+	
+	@POST
+	@Secured
+	@Path("/updateNewP")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Boolean updateNewP(@FormParam("op_code") String opCode,
+            @FormParam("password") String password)
+	{
+		
+		System.out.println( "opCode+password " + opCode+ "  "+password);
+		pService = new PatientService();
+		return pService.updateNewP(opCode, password);
+	}
+	
+	
+	
 }

@@ -44,6 +44,7 @@
         <mapping class="com.psg.ihsserver.entity.Doctor"/>
  		<mapping class="com.psg.ihsserver.entity.Patient"/>
  		<mapping class="com.psg.ihsserver.entity.User"/>
+ 		<mapping class="com.psg.ihsserver.entity.Updates"/>
  		 
     </session-factory>
 </hibernate-configuration>

@@ -204,9 +204,9 @@ public class PatientDaoImpl implements PatientDao {
 		Session session = null;
 		Patient patientByDetails = null;
 		String op_code = null;
-		if(logger.isDebugEnabled()) 
-			System.out.println("getPatientByDetails - Name = "+ patient_name + " D0B = " + dob + " Mobile No " + mobile_no
-					+ "\n" + new BigInteger(mobile_no).longValue());
+		//if(logger.isDebugEnabled()) 
+		System.out.println("getPatientByDetails - Name = "+ patient_name + " D0B = " + dob + " Mobile No " + mobile_no
+					+ "\n" + mobile_no);
 		
 		sf = HibernateUtil.getSessionFactory();
 		
@@ -237,5 +237,69 @@ public class PatientDaoImpl implements PatientDao {
 			session.close();
 		}
 		return op_code;
+	}
+	
+	@Override
+	public Patient login(String op_code, String password) 
+	{
+		Session session = null;
+		Patient patientLogin = null;
+		sf = HibernateUtil.getSessionFactory();
+		
+		System.out.println("op_code "+ op_code);
+		try
+		{
+			session = sf.openSession();
+			session.beginTransaction();
+			Criteria criteria = session.createCriteria(Patient.class);
+			patientLogin = (Patient) criteria.add(Restrictions.eq("op_code", op_code).ignoreCase())
+					 						.add(Restrictions.eq("patient_pwd", password))
+												.uniqueResult();
+			
+			System.out.println("In DAO " + patientLogin.getPatient_name());
+			session.getTransaction().commit();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			session.close();
+		}
+		return patientLogin;
+	}
+
+
+	@Override
+	public Boolean updateNewP(String op_code, String password) {
+		
+		Session session = null;
+		sf = HibernateUtil.getSessionFactory();
+		Patient updateNewP = null;
+		Boolean updateResult = false;
+		try
+		{
+			session = sf.openSession();
+			session.beginTransaction();
+			Criteria criteria = session.createCriteria(Patient.class);
+			updateNewP = (Patient) criteria.add(Restrictions.eq("op_code", op_code).ignoreCase())
+					 						.uniqueResult();
+			
+			updateNewP.setPatient_pwd(password);
+			
+			session.update(updateNewP);
+			session.getTransaction().commit();
+			updateResult = true;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			session.close();
+		}
+		return updateResult;
 	}
 }
