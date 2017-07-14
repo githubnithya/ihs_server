@@ -39,6 +39,7 @@ public class AppointmentDaoImpl implements AppointmentDao{
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Appointment> getAllAppointmentsForPatient(String online_reg_no) {
 		Session session = null;

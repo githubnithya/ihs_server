@@ -7,47 +7,36 @@ import org.junit.Test;
 import com.psg.ihsserver.entity.Appointment;
 import com.psg.ihsserver.util.Utils;
 
-
-
 public class AppointmentTest {
-	
+
 	Utils utilObj = new Utils();
 
 	@Test
-	public void getAllAppointments()
-	{
-		given().when().get("http://172.16.9.80:8081/ihsserver/getAllAppointments?online_reg_no=I17000001").then().statusCode(200);
+	public void getAllAppointments() {
+		given().when().get("http://172.16.9.80:8081/ihsserver/getAllAppointments?online_reg_no=I17000001").then()
+				.statusCode(200);
 	}
-	
+
 	@Test
-	public void bookAppointment()
-	{
+	public void bookAppointment() {
 		Appointment appointment = new Appointment();
-		//TODO Date Serialization from Test Rest client
-		//appointment.setApp_date(utilObj.generateSQLDate("05-06-2017"));
+		// TODO Date Serialization from Test Rest client
+		// appointment.setApp_date(utilObj.generateSQLDate("05-06-2017"));
 		appointment.setOnline_reg_no("I17000001");
 		appointment.setCharge(1221);
-		given()
-		.contentType("application/json")
-		.when()
-		.body(appointment)
-		.post("http://172.16.9.80:8081/ihsserver/bookAppointment").then().statusCode(201);
+		given().contentType("application/json").when().body(appointment)
+				.post("http://172.16.9.80:8081/ihsserver/bookAppointment").then().statusCode(201);
 	}
-	
+
 	@Test
-	public void cancelAppointment()
-	{
+	public void cancelAppointment() {
 		Appointment appointment = new Appointment();
-		//TODO Date Serialization from Test Rest client
-		//appointment.setApp_date(utilObj.generateSQLDate("05-06-2017"));
+		// TODO Date Serialization from Test Rest client
+		// appointment.setApp_date(utilObj.generateSQLDate("05-06-2017"));
 		appointment.setOnline_reg_no("I17000001");
 		appointment.setCharge(1221);
-		
-		given()
-		.contentType("application/json")
-		.when()
-		.body(appointment)
-		.post("http://172.16.9.80:8081/ihsserver/cancelAppointment").then().statusCode(201);
+
+		given().contentType("application/json").when().body(appointment)
+				.post("http://172.16.9.80:8081/ihsserver/cancelAppointment").then().statusCode(201);
 	}
 }
-

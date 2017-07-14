@@ -16,6 +16,7 @@ import com.psg.ihsserver.util.HibernateUtil;
 public class DoctorDaoImpl implements DoctorDao{
 
 	SessionFactory sf;
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Doctor> getDoctorForDepartment(Long dept_no) {
 		
