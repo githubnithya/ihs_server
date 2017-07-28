@@ -20,6 +20,8 @@ import javax.ws.rs.core.Response;
 
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 
+import com.psg.ihsserver.bean.AppointmentBean;
+import com.psg.ihsserver.bean.DepartmentBean;
 import com.psg.ihsserver.bean.DoctorBean;
 import com.psg.ihsserver.entity.Appointment;
 import com.psg.ihsserver.entity.Department;
@@ -34,6 +36,8 @@ import com.psg.ihsserver.service.DepartmentService;
 import com.psg.ihsserver.service.DoctorService;
 import com.psg.ihsserver.service.PatientService;
 import com.psg.ihsserver.service.UpdatesService;
+
+import oracle.net.aso.b;
 
 
 /**
@@ -113,7 +117,6 @@ public class IHSRestServer {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Patient getPatient()
 	{
-		
 		System.out.println("Sending sample Patient data to client");
 	//	return p;
 		return null;
@@ -126,7 +129,6 @@ public class IHSRestServer {
 	{
 		pService = new PatientService();
 		Patient patient = pService.getPatient(online_reg_no);
-		
 		
 		System.out.println("Sending Patient data to client" + patient.getPatient_name());
 		return patient;
@@ -161,18 +163,23 @@ public class IHSRestServer {
 	}
 	
 	@POST
+	@Secured
 	@Path("/bookAppointment")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response bookAppointment(Appointment appointment)
+	public Boolean bookAppointment(AppointmentBean appointment)
 	{
-		System.out.println("From Server, got Patient" + appointment.getApp_date());
-		
+		System.out.println("From Server, got Appointment" + appointment.getApp_date());
+		bResponse = false;
 		appService=  new AppointmentService();
 		bResponse = appService.bookAppointment(appointment);
-		if(bResponse)
-			response = "Appointment booked";
-		return Response.status(201).entity(response).build();
-	}
+		System.out.println("response is " + bResponse);
+//		bResponse = true;
+		return bResponse;
+		//return Response.status(201).entity(bResponse).build();
+//		if(bResponse)
+//			response = "Appointment booked";
+//		return Response.status(201).entity(response).build();
+	} 
 	//TODO Change Date param to String
 	
 	@POST
@@ -219,10 +226,10 @@ public class IHSRestServer {
 	@GET
 	@Path("/getAllDepartments")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Department> getAllDepartments()
+	public List<DepartmentBean> getAllDepartments()
 	{
 		deptService = new DepartmentService();
-		List<Department> departmentsList = null;
+		List<DepartmentBean> departmentsList = null;
 		
 		departmentsList = deptService.getAllDepartments();
 		System.out.println("Size of department list "+ departmentsList.size());
@@ -368,12 +375,33 @@ public class IHSRestServer {
 	public Boolean updateNewP(@FormParam("op_code") String opCode,
             @FormParam("password") String password)
 	{
-		
 		System.out.println( "opCode+password " + opCode+ "  "+password);
 		pService = new PatientService();
 		return pService.updateNewP(opCode, password);
 	}
 	
+	@GET
+	@Secured
+	@Path("/docForDept")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<DoctorBean> docForDept(@QueryParam(value = "deptName") String deptName)
+	{
+		docService = new DoctorService();
+		return docService.getDoctorForDepartment(deptName);
+	}
+	
+	@GET
+	@Secured
+	@Path("/getTxId")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getTxId(@QueryParam(value="opCode") String opCode)
+	{
+		//TODO get user transaction id for payment transaction - 
+		//create transaction record in DB
+		
+		return "Sdfsd";
+		
+	}
 	
 	
 }

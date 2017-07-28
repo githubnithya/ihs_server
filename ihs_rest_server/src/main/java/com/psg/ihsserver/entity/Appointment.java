@@ -17,6 +17,8 @@ public class Appointment implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
+	@Column(name="MRDTCG_APP_ID")
+	private Integer app_id;
 	@Column(name="MRDMCG_ONLINE_REG_NO")
 	private String online_reg_no;
 	@Column(name="MRDTCG_OP_CODE")
@@ -39,6 +41,8 @@ public class Appointment implements Serializable{
 	private String bill_code;
 	@Column(name="MRDMCG_VISIT_STATUS")
 	private String visit_status;
+	@Column(name="MRDTCG_APP_STATUS")
+	private String app_status;
 	@Column(name="MRDTCG_DIV_CODE")
 	private String div_code;
 	
@@ -46,6 +50,15 @@ public class Appointment implements Serializable{
 	public Appointment(){
 		
 	}
+	
+	public Integer getApp_id() {
+		return app_id;
+	}
+
+	public void setApp_id(Integer app_id) {
+		this.app_id = app_id;
+	}
+
 	public String getOnline_reg_no() {
 		return online_reg_no;
 	}
@@ -106,6 +119,15 @@ public class Appointment implements Serializable{
 	public void setBill_code(String bill_code) {
 		this.bill_code = bill_code;
 	}
+	
+	public String getApp_status() {
+		return app_status;
+	}
+
+	public void setApp_status(String app_status) {
+		this.app_status = app_status;
+	}
+
 	public String getVisit_status() {
 		return visit_status;
 	}
@@ -118,5 +140,9 @@ public class Appointment implements Serializable{
 	public void setDiv_code(String div_code) {
 		this.div_code = div_code;
 	}
-	
+	@Override
+	public String toString()
+	{
+		return "";
+	}
 }

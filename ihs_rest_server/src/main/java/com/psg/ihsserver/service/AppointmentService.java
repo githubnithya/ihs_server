@@ -3,9 +3,13 @@ package com.psg.ihsserver.service;
 import java.sql.Date;
 import java.util.List;
 
+import com.psg.ihsserver.bean.AppointmentBean;
 import com.psg.ihsserver.dao.AppointmentDao;
 import com.psg.ihsserver.daoimpl.AppointmentDaoImpl;
 import com.psg.ihsserver.entity.Appointment;
+import com.psg.ihsserver.util.Utils;
+
+import oracle.net.aso.a;
 
 public class AppointmentService {
 	
@@ -25,4 +29,10 @@ public class AppointmentService {
 		appDao = new AppointmentDaoImpl();
 		return appDao.cancelAppointment(online_reg_no, app_date);
 	}
+	public boolean bookAppointment(AppointmentBean appointment) {
+		
+		appDao = new AppointmentDaoImpl();
+		return appDao.bookAppointment(Utils.convertToEntity(appointment));
+	}
+	
 }

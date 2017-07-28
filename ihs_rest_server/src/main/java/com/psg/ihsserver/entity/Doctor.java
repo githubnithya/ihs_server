@@ -27,6 +27,11 @@ public class Doctor implements Serializable{
 	@Column(name="MRDMCG_DOC_NAME")
 	private String doc_name;
 	
+	@Column(name="MRDMCG_DOC_FEE")
+	private Long doc_fee;
+	
+	@Column(name="MRDMCG_DOC_A")
+	private String doc_availability;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "MRDTCG_CONS_DEPT", nullable = false)
@@ -46,6 +51,20 @@ public class Doctor implements Serializable{
 		this.doc_name = doc_name;
 	}
 	
+	
+	
+	public Long getDoc_fee() {
+		return doc_fee;
+	}
+	public void setDoc_fee(Long doc_fee) {
+		this.doc_fee = doc_fee;
+	}
+	public String getDoc_availability() {
+		return doc_availability;
+	}
+	public void setDoc_availability(String doc_availability) {
+		this.doc_availability = doc_availability;
+	}
 	public Department getDepartment() {
 		return department;
 	}

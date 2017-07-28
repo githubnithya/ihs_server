@@ -12,10 +12,17 @@ import com.psg.ihsserver.util.Utils;
 public class DoctorService {
 
 	DoctorDao docDao;
-	public List<Doctor> getDoctorForDepartment(Long dept_no)
+	public List<DoctorBean> getDoctorForDepartment(String deptName)
 	{
 		docDao = new DoctorDaoImpl();
-		return docDao.getDoctorForDepartment(dept_no);
+		List<Doctor> docList =docDao.getDoctorForDepartment(deptName);
+		List<DoctorBean> docBeanList = new ArrayList<DoctorBean>();
+		for(Doctor doc: docList)
+		{
+			docBeanList.add(Utils.convertToBean(doc));
+		}
+		
+		return docBeanList;
 	}
 	
 	public List<DoctorBean> getAllDoctors()

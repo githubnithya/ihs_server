@@ -25,6 +25,8 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.ws.rs.Consumes;
@@ -35,12 +37,20 @@ import javax.ws.rs.Consumes;
 public class GsonProvider implements MessageBodyWriter<Object>, MessageBodyReader<Object>{
 
 	private final Gson gson;
+	private SimpleDateFormat dtf = new SimpleDateFormat("dd-MM-yyyy");
 
 	  public GsonProvider() {
 		  GsonBuilder gsonBuilder = new GsonBuilder();
 		  gsonBuilder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() { 
 			   public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-				      return new Date(json.getAsJsonPrimitive().getAsLong()); 
+				      try {
+				    	  System.out.println(dtf.parse(json.getAsString()));
+						return dtf.parse(json.getAsString());
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block - replace loggin
+						e.printStackTrace();
+					}
+					return null;
 				   } 
 				});
 		  gsonBuilder.registerTypeAdapter(Date.class, new JsonSerializer<Date>() {

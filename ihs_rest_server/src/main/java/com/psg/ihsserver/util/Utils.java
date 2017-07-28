@@ -18,9 +18,12 @@ import javax.xml.bind.DatatypeConverter;
 
 import org.apache.log4j.Logger;
 
+import com.psg.ihsserver.bean.AppointmentBean;
 import com.psg.ihsserver.bean.DepartmentBean;
 import com.psg.ihsserver.bean.DoctorBean;
 import com.psg.ihsserver.daoimpl.PatientDaoImpl;
+import com.psg.ihsserver.entity.Appointment;
+import com.psg.ihsserver.entity.Department;
 import com.psg.ihsserver.entity.Doctor;
 
 public class Utils {
@@ -185,11 +188,38 @@ public class Utils {
 	{
 		DepartmentBean dept = new DepartmentBean(doctor.getDepartment().getDept_no(), doctor.getDepartment().getDept_name());
 		
-		DoctorBean doc = new DoctorBean(doctor.getDoc_no(), doctor.getDoc_name(), dept);
+		DoctorBean doc = new DoctorBean(doctor.getDoc_no(), doctor.getDoc_name(), doctor.getDoc_fee(), doctor.getDoc_availability(), dept);
 		return doc;
 		
 	}
 	
+	public static DepartmentBean convertToBean(Department department)
+	{
+		DepartmentBean dept = new DepartmentBean(department.getDept_no(), department.getDept_name());
+		return dept;
+	}
+	
+	public static Appointment convertToEntity(AppointmentBean appBean)
+	{
+		Appointment app = new Appointment();
+		app.setApp_id(appBean.getApp_id());
+		app.setApp_date(Utils.generateSQLDate(appBean.getApp_date()));
+		app.setApp_status(appBean.getApp_status());
+		app.setCons_dept(appBean.getCons_dept());
+		app.setCons_dr_no(appBean.getCons_dr_no());
+		app.setBill_code(appBean.getBill_code());
+		app.setCharge(appBean.getCharge());
+		app.setOnline_reg_no(appBean.getOnline_reg_no());
+		app.setOp_code(appBean.getOp_code());
+		app.setDiv_code(appBean.getDiv_code());
+		app.setReceipt_code(appBean.getReceipt_code());
+		app.setReceipt_status(appBean.getReceipt_status());
+		app.setSer_code(appBean.getSer_code());
+		app.setVisit_status(appBean.getVisit_status());
+		
+		return app;
+		
+	}
 	public static boolean mobileNoValidator(String mobileNo) {
        
         boolean check = false;

@@ -38,7 +38,7 @@ public class AuthenticationFilter implements ContainerRequestFilter{
 
             // Validate the token
         		validateToken(token);
-
+        	System.out.println("token validated");
         } catch (UnAuthorizedRequestException e) {
         	arg0.abortWith(
                 Response.status(Response.Status.UNAUTHORIZED).build());

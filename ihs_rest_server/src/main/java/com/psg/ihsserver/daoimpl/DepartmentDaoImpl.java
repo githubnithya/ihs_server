@@ -34,7 +34,7 @@ public class DepartmentDaoImpl implements DepartmentDao{
 			for(Department d : listOfDepartments)
 				{
 					List<Doctor> doctorList = new ArrayList<Doctor>();
-					doctorList = docDao.getDoctorForDepartment(d.getDept_no());
+					doctorList = docDao.getDoctorForDepartment(d.getDept_name());
 					d.setDoctorsList(doctorList);
 				}
 			

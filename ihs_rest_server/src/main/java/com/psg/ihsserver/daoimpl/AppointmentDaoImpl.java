@@ -20,12 +20,16 @@ public class AppointmentDaoImpl implements AppointmentDao{
 	public boolean bookAppointment(Appointment appointment) {
 		Session session = null;
 		sf = HibernateUtil.getSessionFactory();
+		boolean insertStatus = false;
 		try
 		{
+			System.out.println("appDate before insert " +appointment.getApp_date());
 			session = sf.openSession();
 			session.beginTransaction();
-			String id = (String) session.save(appointment);
+			int id = (int) session.save(appointment);
 			session.getTransaction().commit();
+			if(id > 0)
+				insertStatus = true;
 		}
 		catch(Exception e)
 		{
@@ -35,7 +39,7 @@ public class AppointmentDaoImpl implements AppointmentDao{
 		{
 			session.close();
 		}
-	return false;
+	return insertStatus;
 		
 	}
 
