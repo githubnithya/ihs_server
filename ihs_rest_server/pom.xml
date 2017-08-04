@@ -275,6 +275,13 @@
     <systemPath>${project.basedir}/lib/SingleURLJar_1.0.12.jar</systemPath>
 </dependency>
 
+<!--  For BackgroundJobManager -->
+<dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>javax.servlet-api</artifactId>
+    <version>3.0.1</version>
+    <scope>provided</scope>
+</dependency>
 
 
 

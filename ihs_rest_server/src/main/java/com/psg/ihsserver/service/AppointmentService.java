@@ -34,5 +34,10 @@ public class AppointmentService {
 		appDao = new AppointmentDaoImpl();
 		return appDao.bookAppointment(Utils.convertToEntity(appointment));
 	}
+	public boolean updateTxId(String opCode, String date, String tx_id)
+	{
+		appDao = new AppointmentDaoImpl();
+		return appDao.updateTxId(opCode, date, tx_id);
+	}
 	
 }

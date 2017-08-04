@@ -46,6 +46,29 @@ public class Appointment implements Serializable{
 	@Column(name="MRDTCG_DIV_CODE")
 	private String div_code;
 	
+	
+	
+	 @Column(name="MRDTCG_STATUSMSG")
+	    private String tx_statusMsg;
+	    @Column(name="MRDTCG_STATUSCODE")
+	    private String tx_statusCode;
+	    @Column(name="MRDTCG_AMOUNT")
+	    private String tx_amount;
+	    @Column(name="MRDTCG_DATETIME")
+	    private String tx_dateTime;
+	    @Column(name="MRDTCG_MERCHANTID")
+	    private String tx_merchantTxId;
+	    @Column(name="MRDTCG_MERCHANTCODE")
+	    private String tx_merchantCode;
+	    @Column(name="MRDTCG_PAYMENTMETHOD")
+	    private String tx_paymentMethod;
+	    @Column(name="MRDTCG_PG_ID")
+	    private String tx_pg_id;
+	    @Column(name="MRDTCG_REFUNDID")
+	    private String tx_refundId;
+	    @Column(name="MRDTCG_CHECKOUTOBJ")
+	    private String tx_checkoutObj;
+	    
 
 	public Appointment(){
 		
@@ -140,6 +163,87 @@ public class Appointment implements Serializable{
 	public void setDiv_code(String div_code) {
 		this.div_code = div_code;
 	}
+	
+	public String getTx_statusMsg() {
+		return tx_statusMsg;
+	}
+
+	public void setTx_statusMsg(String tx_statusMsg) {
+		this.tx_statusMsg = tx_statusMsg;
+	}
+
+	public String getTx_statusCode() {
+		return tx_statusCode;
+	}
+
+	public void setTx_statusCode(String tx_statusCode) {
+		this.tx_statusCode = tx_statusCode;
+	}
+
+	public String getTx_amount() {
+		return tx_amount;
+	}
+
+	public void setTx_amount(String tx_amount) {
+		this.tx_amount = tx_amount;
+	}
+
+	public String getTx_dateTime() {
+		return tx_dateTime;
+	}
+
+	public void setTx_dateTime(String tx_dateTime) {
+		this.tx_dateTime = tx_dateTime;
+	}
+
+	public String getTx_merchantTxId() {
+		return tx_merchantTxId;
+	}
+
+	public void setTx_merchantTxId(String tx_merchantTxId) {
+		this.tx_merchantTxId = tx_merchantTxId;
+	}
+
+	public String getTx_merchantCode() {
+		return tx_merchantCode;
+	}
+
+	public void setTx_merchantCode(String tx_merchantCode) {
+		this.tx_merchantCode = tx_merchantCode;
+	}
+
+	public String getTx_paymentMethod() {
+		return tx_paymentMethod;
+	}
+
+	public void setTx_paymentMethod(String tx_paymentMethod) {
+		this.tx_paymentMethod = tx_paymentMethod;
+	}
+
+	public String getTx_pg_id() {
+		return tx_pg_id;
+	}
+
+	public void setTx_pg_id(String tx_pg_id) {
+		this.tx_pg_id = tx_pg_id;
+	}
+
+	public String getTx_refundId() {
+		return tx_refundId;
+	}
+
+	public void setTx_refundId(String tx_refundId) {
+		this.tx_refundId = tx_refundId;
+	}
+
+	public String getTx_checkoutObj() {
+		return tx_checkoutObj;
+	}
+
+	public void setTx_checkoutObj(String tx_checkoutObj) {
+		this.tx_checkoutObj = tx_checkoutObj;
+	}
+
 	@Override
 	public String toString()
 	{

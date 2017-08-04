@@ -1,11 +1,14 @@
 package com.psg.ihsserver.util;
 
+import java.nio.file.AtomicMoveNotSupportedException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.TimeZone;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
 import javax.crypto.Cipher;
@@ -54,6 +57,25 @@ public class Utils {
 		if (logger.isDebugEnabled())
 			logger.debug("generateSQLDate from " + dateStr);
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+		formatter.setTimeZone(TimeZone.getTimeZone("IST"));
+		java.util.Date date;
+		java.sql.Date sqlDOB = null;
+		try {
+			date = formatter.parse(dateStr);
+			sqlDOB = new java.sql.Date(date.getTime());
+			
+
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return sqlDOB;
+	}
+	
+	public static Date generateSQLDateTime(String dateStr, String format) {
+		if (logger.isDebugEnabled())
+			logger.debug("generateSQLDate from " + dateStr);
+		SimpleDateFormat formatter = new SimpleDateFormat(format);
 		formatter.setTimeZone(TimeZone.getTimeZone("IST"));
 		java.util.Date date;
 		java.sql.Date sqlDOB = null;
@@ -216,9 +238,18 @@ public class Utils {
 		app.setReceipt_status(appBean.getReceipt_status());
 		app.setSer_code(appBean.getSer_code());
 		app.setVisit_status(appBean.getVisit_status());
+		app.setTx_statusCode(appBean.getTx_statusCode());
+		app.setTx_statusMsg(appBean.getTx_statusMsg());
+		app.setTx_amount(appBean.getTx_amount());
+		app.setTx_dateTime(appBean.getTx_dateTime());
+		app.setTx_merchantTxId(appBean.getTx_merchantTxId());
+		app.setTx_merchantCode(appBean.getTx_merchantCode());
+		app.setTx_paymentMethod(appBean.getTx_paymentMethod());
+		app.setTx_pg_id(appBean.getTx_pg_id());
+		app.setTx_refundId(appBean.getTx_refundId());
+		app.setTx_checkoutObj(appBean.getTx_checkoutObj());
 		
 		return app;
-		
 	}
 	public static boolean mobileNoValidator(String mobileNo) {
        
@@ -238,4 +269,17 @@ public class Utils {
         }
         return check;
     }
+	
+	public static String generateTxId(String opCode, String date)
+	{
+		String tx_id = null;
+		
+		AtomicInteger atom = new AtomicInteger();
+		atom.set(Math.abs((int)generateSQLDateTime(date, "dd-MM-yyyy").getTime()));
+	//	System.out.println("(int)generateSQLDateTime(date).getTime() " + Math.abs((int)generateSQLDateTime(date).getTime()));
+		tx_id = Integer.toString(atom.incrementAndGet());
+		
+		System.out.println(tx_id);
+		return tx_id;
+	}
 }

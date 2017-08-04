@@ -36,7 +36,9 @@ import com.psg.ihsserver.service.DepartmentService;
 import com.psg.ihsserver.service.DoctorService;
 import com.psg.ihsserver.service.PatientService;
 import com.psg.ihsserver.service.UpdatesService;
+import com.psg.ihsserver.util.Utils;
 
+import oracle.net.aso.a;
 import oracle.net.aso.b;
 
 
@@ -168,7 +170,7 @@ public class IHSRestServer {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Boolean bookAppointment(AppointmentBean appointment)
 	{
-		System.out.println("From Server, got Appointment" + appointment.getApp_date());
+		System.out.println("From Server, got Appointment" + appointment.getApp_date()+ " appId " + appointment.getApp_id());
 		bResponse = false;
 		appService=  new AppointmentService();
 		bResponse = appService.bookAppointment(appointment);
@@ -392,15 +394,19 @@ public class IHSRestServer {
 	
 	@GET
 	@Secured
-	@Path("/getTxId")
+	@Path("/txId")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getTxId(@QueryParam(value="opCode") String opCode)
+	public String getTxId(@QueryParam(value="opCode") String opCode, @QueryParam(value="tx_date") String tx_date)
 	{
 		//TODO get user transaction id for payment transaction - 
 		//create transaction record in DB
 		
-		return "Sdfsd";
-		
+		appService = new AppointmentService();
+		 String tx_id = Utils.generateTxId(opCode, tx_date);
+		 System.out.println("tx_id " + tx_id);
+		boolean response = appService.updateTxId(opCode, tx_date,tx_id);
+		System.out.println("tx_id update in db " +response);
+		return tx_id;
 	}
 	
 	
