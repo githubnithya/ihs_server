@@ -1,7 +1,5 @@
 package com.psg.ihsserver.service;
 
-
-
 import com.psg.ihsserver.dao.PatientDao;
 import com.psg.ihsserver.daoimpl.PatientDaoImpl;
 import com.psg.ihsserver.entity.Patient;
