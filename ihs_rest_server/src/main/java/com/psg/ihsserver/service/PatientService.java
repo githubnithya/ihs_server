@@ -73,6 +73,8 @@ public class PatientService {
 	public Boolean updateNewP(String op_code, String password) throws ApplicationException
 	{
 		pDao = new PatientDaoImpl();
-		return pDao.updateNewP(op_code, password);
+		String encPassword = Utils.encrypt(password);
+		//patient.setPatient_pwd(encPassword);
+		return pDao.updateNewP(op_code, encPassword);
 	}
 }
