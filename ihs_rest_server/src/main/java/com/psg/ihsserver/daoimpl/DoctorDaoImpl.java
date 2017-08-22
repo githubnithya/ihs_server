@@ -2,6 +2,7 @@ package com.psg.ihsserver.daoimpl;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,14 +13,16 @@ import com.psg.ihsserver.dao.DoctorDao;
 import com.psg.ihsserver.entity.Department;
 import com.psg.ihsserver.entity.Doctor;
 import com.psg.ihsserver.entity.Patient;
+import com.psg.ihsserver.exception.ApplicationException;
 import com.psg.ihsserver.util.HibernateUtil;
 
 public class DoctorDaoImpl implements DoctorDao{
 
+	private static final Logger logger = Logger.getLogger(DoctorDaoImpl.class);
 	SessionFactory sf;
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Doctor> getDoctorForDepartment(String deptName) {
+	public List<Doctor> getDoctorForDepartment(String deptName) throws ApplicationException {
 		
 		Session session = null;
 		List<Doctor> docList = null;
@@ -44,7 +47,8 @@ public class DoctorDaoImpl implements DoctorDao{
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			logger.error(e.getMessage());
+			throw new ApplicationException("Cannot get list of doctors");
 		}
 		finally
 		{
@@ -54,7 +58,7 @@ public class DoctorDaoImpl implements DoctorDao{
 	}
 	
 	@Override
-	public List<Doctor> getAllDoctors() {
+	public List<Doctor> getAllDoctors() throws ApplicationException {
 		Session session = null;
 		List<Doctor> docList = null;
 		sf = HibernateUtil.getSessionFactory();
@@ -75,7 +79,8 @@ public class DoctorDaoImpl implements DoctorDao{
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			logger.error(e.getMessage());
+			throw new ApplicationException("Cannot get list of doctors");
 		}
 		finally
 		{

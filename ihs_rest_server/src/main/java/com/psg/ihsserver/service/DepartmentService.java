@@ -7,13 +7,14 @@ import com.psg.ihsserver.bean.DepartmentBean;
 import com.psg.ihsserver.dao.DepartmentDao;
 import com.psg.ihsserver.daoimpl.DepartmentDaoImpl;
 import com.psg.ihsserver.entity.Department;
+import com.psg.ihsserver.exception.ApplicationException;
 import com.psg.ihsserver.util.Utils;
 
 public class DepartmentService {
 
 	DepartmentDao deptDao;
 
-	public List<DepartmentBean> getAllDepartments()
+	public List<DepartmentBean> getAllDepartments () throws ApplicationException
 	{
 		deptDao = new DepartmentDaoImpl();
 		List<Department> departments = deptDao.getAllDepartments();

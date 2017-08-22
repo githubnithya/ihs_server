@@ -3,7 +3,7 @@ package com.psg.ihsserver.daoimpl;
 import java.sql.Date;
 import java.util.List;
 
-
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -12,6 +12,7 @@ import org.hibernate.criterion.Restrictions;
 
 import com.psg.ihsserver.dao.AppointmentDao;
 import com.psg.ihsserver.entity.Appointment;
+import com.psg.ihsserver.exception.ApplicationException;
 import com.psg.ihsserver.util.HibernateUtil;
 import com.psg.ihsserver.util.Utils;
 
@@ -20,15 +21,17 @@ import oracle.net.aso.q;
 public class AppointmentDaoImpl implements AppointmentDao{
 
 	SessionFactory sf;
+	private static final Logger logger = Logger.getLogger(AppointmentDaoImpl.class);
 	
 	@Override
-	public boolean bookAppointment(Appointment appointment) {
+	public boolean bookAppointment(Appointment appointment) throws ApplicationException {
 		Session session = null;
 		sf = HibernateUtil.getSessionFactory();
 		boolean insertStatus = false;
+		
 		try
 		{
-			System.out.println("appDate before insert " +appointment.getApp_date());
+			//System.out.println("appDate before insert " +appointment.getApp_date());
 			session = sf.openSession();
 			session.beginTransaction();
 			int id = (int) session.save(appointment);
@@ -38,7 +41,8 @@ public class AppointmentDaoImpl implements AppointmentDao{
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			logger.error(e.getMessage());
+			throw new ApplicationException(e.getMessage());
 		}
 		finally
 		{
@@ -50,7 +54,7 @@ public class AppointmentDaoImpl implements AppointmentDao{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Appointment> getAllAppointmentsForPatient(String online_reg_no) {
+	public List<Appointment> getAllAppointmentsForPatient(String online_reg_no) throws ApplicationException {
 		Session session = null;
 		List<Appointment> listOfAppointments = null;
 		sf = HibernateUtil.getSessionFactory();
@@ -63,7 +67,8 @@ public class AppointmentDaoImpl implements AppointmentDao{
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			logger.error(e.getMessage());
+			throw new ApplicationException(e.getMessage());
 		}
 		finally
 		{
@@ -72,7 +77,7 @@ public class AppointmentDaoImpl implements AppointmentDao{
 	return listOfAppointments;
 	}
 
-	public boolean updateTxId(String opCode, String date, String tx_id)
+	public boolean updateTxId(String opCode, String date, String tx_id) throws ApplicationException
 	{
 		Session session = null;
 		boolean response = false;
@@ -96,8 +101,10 @@ public class AppointmentDaoImpl implements AppointmentDao{
 			if(result > 0)
 				response = true;
 		}
-		catch (Exception e) {
-			e.printStackTrace();
+		catch(Exception e)
+		{
+			logger.error(e.getMessage());
+			throw new ApplicationException(e.getMessage());
 		}
 		finally{
 			session.close();
@@ -108,7 +115,7 @@ public class AppointmentDaoImpl implements AppointmentDao{
 	
 	
 	@Override
-	public boolean cancelAppointment(String online_reg_no, Date app_date) {
+	public boolean cancelAppointment(String online_reg_no, Date app_date) throws ApplicationException {
 		
 		Session session = null;
 		Appointment appointment = null;
@@ -128,7 +135,8 @@ public class AppointmentDaoImpl implements AppointmentDao{
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			logger.error(e.getMessage());
+			throw new ApplicationException(e.getMessage());
 		}
 		finally
 		{

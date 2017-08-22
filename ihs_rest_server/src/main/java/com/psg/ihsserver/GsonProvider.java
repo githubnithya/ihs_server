@@ -8,6 +8,8 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
+import org.apache.log4j.Logger;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -36,6 +38,7 @@ import javax.ws.rs.Consumes;
 @Consumes(MediaType.APPLICATION_JSON)
 public class GsonProvider implements MessageBodyWriter<Object>, MessageBodyReader<Object>{
 
+	private static final Logger logger = Logger.getLogger(GsonProvider.class);
 	private final Gson gson;
 	private SimpleDateFormat dtf = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -44,11 +47,12 @@ public class GsonProvider implements MessageBodyWriter<Object>, MessageBodyReade
 		  gsonBuilder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() { 
 			   public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 				      try {
-				    	  System.out.println(dtf.parse(json.getAsString()));
+				    	  logger.info(dtf.parse(json.getAsString()));
 						return dtf.parse(json.getAsString());
 					} catch (ParseException e) {
 						// TODO Auto-generated catch block - replace loggin
-						e.printStackTrace();
+						//e.printStackTrace();
+						logger.error(e.getMessage());
 					}
 					return null;
 				   } 
@@ -65,7 +69,7 @@ public class GsonProvider implements MessageBodyWriter<Object>, MessageBodyReade
 	    		//.setDateFormat("dd-MM-yyyy")
 	    		.create();
 	    
-	    System.out.println("Created GsonProvider");
+	    logger.info("Created GsonProvider");
 	  }
 	  
 	@Override

@@ -3,6 +3,7 @@ package com.psg.ihsserver.daoimpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -10,16 +11,18 @@ import com.psg.ihsserver.dao.DepartmentDao;
 import com.psg.ihsserver.dao.DoctorDao;
 import com.psg.ihsserver.entity.Department;
 import com.psg.ihsserver.entity.Doctor;
+import com.psg.ihsserver.exception.ApplicationException;
 import com.psg.ihsserver.util.HibernateUtil;
 
 public class DepartmentDaoImpl implements DepartmentDao{
 
+	private static final Logger logger = Logger.getLogger(DepartmentDaoImpl.class);
 	DoctorDao docDao;
 	SessionFactory sf;
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Department> getAllDepartments() {
+	public List<Department> getAllDepartments() throws ApplicationException{
 		Session session = null;
 		List<Department> listOfDepartments = null;
 		sf = HibernateUtil.getSessionFactory();
@@ -38,12 +41,13 @@ public class DepartmentDaoImpl implements DepartmentDao{
 					d.setDoctorsList(doctorList);
 				}
 			
-			System.out.println("Size of department list "+ listOfDepartments.size());
+			logger.info("Size of department list "+ listOfDepartments.size());
 			session.getTransaction().commit();
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			logger.error(e.getMessage());
+			throw new ApplicationException("Error in getting list of departments");
 		}
 		finally
 		{

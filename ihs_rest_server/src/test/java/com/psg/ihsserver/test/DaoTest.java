@@ -13,7 +13,12 @@ public class DaoTest {
 	{
 		Patient p = createNewPatientTest();
 		PatientDao pDao = new PatientDaoImpl();
-		pDao.insertNewPatient(p);
+		try {
+			pDao.insertNewPatient(p);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public static Patient createNewPatientTest()
@@ -49,7 +54,7 @@ public class DaoTest {
 	//	patient.setMobile_no(new BigInteger("1234567892"));
 		patient.setMail_id("lionelmessi@gmail.com");
 		patient.setDependent_type("F");
-		patient.setDependent_name("Jorge Horácio Messi");
+		patient.setDependent_name("Jorge Horï¿½cio Messi");
 		patient.setDependent_name("Father of player");
 	//	patient.setDependent_aadhaar_no(new BigInteger("234567891213"));
 		patient.setDiv_code("D");

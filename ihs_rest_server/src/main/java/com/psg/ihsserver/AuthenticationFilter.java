@@ -8,7 +8,10 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
-import com.psg.ihsserver.exception.UnAuthorizedRequestException;
+import org.apache.log4j.Logger;
+
+import com.psg.ihsserver.exception.ApplicationException;
+import com.psg.ihsserver.exception.UnAuthorisedRequestException;
 import com.psg.ihsserver.oauth2.ResourceEndPoint;
 import com.psg.ihsserver.oauth2.Secured;
 import com.psg.ihsserver.util.Utils;
@@ -17,13 +20,14 @@ import com.psg.ihsserver.util.Utils;
 @Provider
 @Secured
 public class AuthenticationFilter implements ContainerRequestFilter{
+	private static final Logger logger = Logger.getLogger(AuthenticationFilter.class);
 
 	@Override
 	public void filter(ContainerRequestContext arg0) throws IOException {
 		final String AUTHENTICATION_HEADER = "Authorization";
 
 		
-		System.out.println("In Authentication Filter");
+		logger.info("In Authentication Filter");
 		String authorizationHeader = arg0.getHeaderString(AUTHENTICATION_HEADER);
 		 
 		// Check if the HTTP Authorization header is present and formatted correctly 
@@ -38,15 +42,16 @@ public class AuthenticationFilter implements ContainerRequestFilter{
 
             // Validate the token
         		validateToken(token);
-        	System.out.println("token validated");
-        } catch (UnAuthorizedRequestException e) {
+        	logger.info("token validated");
+        } catch (UnAuthorisedRequestException e) {
+        	logger.error(e.getMessage());
         	arg0.abortWith(
                 Response.status(Response.Status.UNAUTHORIZED).build());
         }
 
 	}
 	
-	private boolean validateToken(String token) throws UnAuthorizedRequestException
+	private boolean validateToken(String token) throws UnAuthorisedRequestException
 	{
 		return token.equals(Utils.getAuthToken());
 	}

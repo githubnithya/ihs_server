@@ -7,12 +7,13 @@ import com.psg.ihsserver.bean.DoctorBean;
 import com.psg.ihsserver.dao.DoctorDao;
 import com.psg.ihsserver.daoimpl.DoctorDaoImpl;
 import com.psg.ihsserver.entity.Doctor;
+import com.psg.ihsserver.exception.ApplicationException;
 import com.psg.ihsserver.util.Utils;
 
 public class DoctorService {
 
 	DoctorDao docDao;
-	public List<DoctorBean> getDoctorForDepartment(String deptName)
+	public List<DoctorBean> getDoctorForDepartment(String deptName) throws ApplicationException
 	{
 		docDao = new DoctorDaoImpl();
 		List<Doctor> docList =docDao.getDoctorForDepartment(deptName);
@@ -25,7 +26,7 @@ public class DoctorService {
 		return docBeanList;
 	}
 	
-	public List<DoctorBean> getAllDoctors()
+	public List<DoctorBean> getAllDoctors() throws ApplicationException
 	{
 		docDao = new DoctorDaoImpl();
 		List<Doctor> docList = docDao.getAllDoctors();
