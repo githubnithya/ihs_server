@@ -1,6 +1,5 @@
 package com.psg.ihsserver;
 
-import java.security.GeneralSecurityException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,13 +19,13 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import com.psg.ihsserver.bean.AppointmentBean;
 import com.psg.ihsserver.bean.DepartmentBean;
 import com.psg.ihsserver.bean.DoctorBean;
+import com.psg.ihsserver.bean.PatientBean;
 import com.psg.ihsserver.daoimpl.PatientDaoImpl;
 import com.psg.ihsserver.entity.Appointment;
 import com.psg.ihsserver.entity.Patient;
@@ -40,6 +39,9 @@ import com.psg.ihsserver.service.DepartmentService;
 import com.psg.ihsserver.service.DoctorService;
 import com.psg.ihsserver.service.PatientService;
 import com.psg.ihsserver.service.UpdatesService;
+import com.psg.ihsserver.servicejdbc.AppointmentServiceJdbc;
+import com.psg.ihsserver.servicejdbc.DepartmentServiceJdbc;
+import com.psg.ihsserver.servicejdbc.PatientServiceJdbc;
 import com.psg.ihsserver.util.Utils;
 
 import net.sf.ehcache.CacheManager;
@@ -578,4 +580,204 @@ public class IHSRestServer {
 		}
 	}
 
+	@GET
+	@Path("/forgotOpCodeProc")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String forgotOpCodeProc(@QueryParam("patient_name") String patientName, @QueryParam("dob") String dob,
+			@QueryParam("mobile_no") String mobileNo) {
+		try {
+			System.out.println("data: " + patientName + " " + dob + " " + mobileNo);
+			PatientServiceJdbc patientService = new PatientServiceJdbc();
+			String opcode = patientService.forgotOpCode(patientName, dob, mobileNo);
+			return opcode;
+		} catch (ApplicationException e) {
+			// TODO: handle exception
+			logger.error(e.getMessage());
+			return null;
+		}
+	}
+
+	@GET
+	@Path("/forgotPwdProc")
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean forgotPwdProc(@QueryParam("patient_name") String patientName, @QueryParam("dob") String dob,
+			@QueryParam("mobile_no") String mobileNo) {
+		try {
+			PatientServiceJdbc patientService = new PatientServiceJdbc();
+			System.out.println("data: " + patientName + " " + dob + " " + mobileNo);
+			String opcode = patientService.forgotOpCode(patientName, dob, mobileNo);
+			if (null != opcode)
+				return true;
+			else
+				return false;
+		} catch (ApplicationException e) {
+			// TODO: handle exception
+			return false;
+
+		}
+	}
+
+	@GET
+	@Secured
+	@Path("/isPatientProc")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String isPatientProc(@QueryParam("op_code") String opCode) {
+		try {
+			PatientServiceJdbc patientService = new PatientServiceJdbc();
+			String mobile = patientService.isPatient(opCode);
+			return mobile;
+		} catch (ApplicationException e) {
+			// TODO: handle exception
+			return null;
+		}
+	}
+
+	@POST
+	@Path("/updatePatientProc")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response updatePatientDataProc(PatientBean patient) {
+		try {
+			PatientServiceJdbc patientService = new PatientServiceJdbc();
+			bResponse = patientService.updatePatient(patient);
+			if (bResponse)
+				response = "Patient updated";
+			logger.info(response);
+			return Response.status(201).entity(response).build();
+		} catch (ApplicationException e) {
+			logger.info(e.getMessage());
+			return Response.status(204).entity("Patient Cannot be updated").build();
+		}
+	}
+
+	@POST
+	@Secured
+	@Path("/loginProc")
+	@Produces(MediaType.APPLICATION_JSON)
+	public PatientBean loginProc(@FormParam("op_code") String opCode, @FormParam("password") String password) {
+		try {
+			String encPassword = Utils.encrypt(password);
+			PatientServiceJdbc patientService = new PatientServiceJdbc();
+			Patient patientLogin = patientService.login(opCode, encPassword);
+			if (patientLogin != null) {
+				PatientBean patientBean = Utils.convertToBean(patientLogin);
+				return patientBean;
+			} else
+				return null;
+		} catch (ApplicationException e) {
+			logger.error(e.getMessage());
+			return null;
+		}
+	}
+
+	@GET
+	@Path("/getAllDepartmentsProc")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<DepartmentBean> getAllDepartmentsProc() {
+		deptService = new DepartmentService();
+		List<DepartmentBean> departmentsList = null;
+
+		try {
+			DepartmentServiceJdbc deptService = new DepartmentServiceJdbc();
+			departmentsList = deptService.getAllDepartments();
+		} catch (ApplicationException e) {
+			// TODO: handle exception
+			logger.error(e.getMessage());
+		}
+		return departmentsList;
+	}
+
+	/*
+	 * Procedure call for doctor get by dept no not be implemented
+	 * 
+	 * @GET
+	 * 
+	 * @Path("/getAllDoctorsProc")
+	 * 
+	 * @Produces(MediaType.APPLICATION_JSON) public List<DoctorBean>
+	 * getAllDoctorsProc(@QueryParam("deptno") Integer deptNo ) {
+	 * List<DoctorBean> docs = null; try { DoctorServiceJdbc doctorService= new
+	 * DoctorServiceJdbc(); docs=doctorService.getDoctorForDepartment(deptNo); }
+	 * catch (ApplicationException e) { logger.error(e.getMessage()); return
+	 * null; }
+	 * 
+	 * return docs; }
+	 */
+
+	@POST
+	@Secured
+	@Path("/bookAppointmentProc")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Boolean bookAppointmentProc(AppointmentBean appointment) {
+		bResponse = false;
+		System.out.println("appointment " + appointment);
+		try {
+			AppointmentServiceJdbc appointmentService = new AppointmentServiceJdbc();
+			bResponse = appointmentService.bookAppointment(appointment);
+			logger.info("Appointment booking status: " + bResponse);
+		} catch (ApplicationException e) {
+			e.printStackTrace();
+			logger.error(e.getMessage());
+		} catch (NullPointerException e) {
+			logger.error("NullPointerException " + e.getMessage());
+		}
+		return bResponse;
+	}
+
+	@GET
+	@Secured
+	@Path("/txIdProc")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getTxIdProc(@QueryParam(value = "opCode") String opCode,
+			@QueryParam(value = "tx_date") String tx_date) {
+		String tx_id = null;
+		try {
+			AppointmentServiceJdbc appointmentService = new AppointmentServiceJdbc();
+			tx_id = Utils.generateTxId(opCode, tx_date);
+			boolean response = appointmentService.storeTxId(opCode, tx_date, tx_id);
+			logger.info("tx_id update in db " + response);
+
+		} catch (ApplicationException e) {
+			// TODO Auto-generated catch block
+			logger.info(e.getMessage());
+			return null;
+		}
+		return tx_id;
+	}
+
+	@POST
+	@Path("/cancelAppointmentProc")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response cancelAppointmentProc(@QueryParam("online_reg_no") String opcode,
+			@QueryParam("app_date") String app_date) {
+
+		try {
+			AppointmentServiceJdbc appointmentService = new AppointmentServiceJdbc();
+			bResponse = appointmentService.cancelAppointment(opcode, app_date);
+			if (bResponse)
+				response = "Appointment cancelled";
+			logger.info(response);
+			return Response.status(201).entity(response).build();
+		} catch (ApplicationException e) {
+			return Response.status(409).entity("Cannot cancel appointment").build();
+		} catch (NullPointerException e) {
+			logger.info(" " + e.getMessage());
+			return Response.status(400).entity("Null data").build();
+		}
+	}
+
+	@GET
+	@Path("/getAllAppointmentsProc")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<AppointmentBean> getAllAppointmentsForPatientProc(@QueryParam("online_reg_no") String online_reg_no) {
+		List<AppointmentBean> appointmentsList = null;
+		try {
+			AppointmentServiceJdbc appointmentService = new AppointmentServiceJdbc();
+			appointmentsList = appointmentService.getAllAppointmentsForPatient(online_reg_no);
+			logger.info("Sending Appointment data to client" + appointmentsList.size());
+		} catch (ApplicationException e) {
+			// TODO Auto-generated catch block
+			logger.error(e.getMessage());
+		}
+		return appointmentsList;
+	}
 }

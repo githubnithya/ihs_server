@@ -1,5 +1,12 @@
 package com.psg.ihsserver;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Date;
+import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.servlet.ServletContextEvent;
@@ -22,6 +29,10 @@ public class BackgroundJobManager implements ServletContextListener {
 	private ScheduledExecutorService scheduler;
 	public static CacheManager cacheMgr = null;
 	public static final String cacheName = "OtpCache";
+	public static String DB_DRIVER;
+	public static String DB_CONNECTION;
+	public static String DB_USER;
+	public static String DB_PASSWORD;
 
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
@@ -49,10 +60,36 @@ public class BackgroundJobManager implements ServletContextListener {
 			cacheConfiguration.diskExpiryThreadIntervalSeconds(8640000);
 			Cache cache = new Cache(cacheConfiguration);
 			cacheMgr.addCache(cache);
+
 		} catch (CacheException e) {
 			logger.error(e.getLocalizedMessage());
 		}
 		logger.info("Cache Exists " + cacheName + " :" + cacheMgr.cacheExists(cacheName));
+
+		InputStream inputStream = null;
+		try {
+			Properties prop = new Properties();
+			String propFileName = "jdbc.properties";
+			inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+			if (inputStream != null) {
+				prop.load(inputStream);
+			} else {
+				logger.error("property file '" + propFileName + "' not found in the classpath");
+			}
+			DB_DRIVER = prop.getProperty("DB_DRIVER");
+			DB_CONNECTION = prop.getProperty("DB_CONNECTION");
+			DB_USER = prop.getProperty("DB_USER");
+			DB_PASSWORD = prop.getProperty("DB_PASSWORD");
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		} finally {
+			try {
+				inputStream.close();
+			} catch (IOException e) {
+				logger.error("Error in closing InputStream");
+			}
+		}
 	}
 
 }

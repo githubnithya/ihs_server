@@ -5,9 +5,7 @@ import java.util.Date;
 
 public class AppointmentBean implements Serializable{
 
-	
-	
-		private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 		private Integer app_id;
 		private String online_reg_no;
 		private String op_code;
@@ -38,6 +36,43 @@ public class AppointmentBean implements Serializable{
 			
 		}
 		
+		
+		
+		public AppointmentBean(Integer app_id, String online_reg_no, String op_code, Date app_date, Integer cons_dept,
+				Integer cons_dr_no, String ser_code, String receipt_code, Integer charge, String receipt_status,
+				String bill_code, String visit_status, String app_status, String div_code, String tx_statusMsg,
+				String tx_statusCode, String tx_amount, String tx_dateTime, String tx_merchantTxId,
+				String tx_merchantCode, String tx_paymentMethod, String tx_pg_id, String tx_refundId,
+				String tx_checkoutObj) {
+			super();
+			this.app_id = app_id;
+			this.online_reg_no = online_reg_no;
+			this.op_code = op_code;
+			this.app_date = app_date;
+			this.cons_dept = cons_dept;
+			this.cons_dr_no = cons_dr_no;
+			this.ser_code = ser_code;
+			this.receipt_code = receipt_code;
+			this.charge = charge;
+			this.receipt_status = receipt_status;
+			this.bill_code = bill_code;
+			this.visit_status = visit_status;
+			this.app_status = app_status;
+			this.div_code = div_code;
+			this.tx_statusMsg = tx_statusMsg;
+			this.tx_statusCode = tx_statusCode;
+			this.tx_amount = tx_amount;
+			this.tx_dateTime = tx_dateTime;
+			this.tx_merchantTxId = tx_merchantTxId;
+			this.tx_merchantCode = tx_merchantCode;
+			this.tx_paymentMethod = tx_paymentMethod;
+			this.tx_pg_id = tx_pg_id;
+			this.tx_refundId = tx_refundId;
+			this.tx_checkoutObj = tx_checkoutObj;
+		}
+
+
+
 		public Integer getApp_id() {
 			return app_id;
 		}
@@ -210,8 +245,8 @@ public class AppointmentBean implements Serializable{
 		}
 
 		@Override
-		public String toString()
-		{
+		public String toString() {
+		
 			return "";
 		}
 

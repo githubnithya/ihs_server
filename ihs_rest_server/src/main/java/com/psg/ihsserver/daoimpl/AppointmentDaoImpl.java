@@ -128,7 +128,6 @@ public class AppointmentDaoImpl implements AppointmentDao{
 			appointment = (Appointment) criteria.add(Restrictions.eq("online_reg_no", online_reg_no))
 												.add(Restrictions.eq("app_date", app_date))
 												.uniqueResult();
-			//TODO Check if Div Code is to be updated to C for cancellation
 			if(null != appointment)
 				appointment.setDiv_code("C");
 			session.getTransaction().commit();

@@ -25,12 +25,9 @@ public class DepartmentBean implements Serializable {
 	{
 		this.dept_no = dept_no;
 		this.dept_name = dept_name;
-		
-			
-		
 	}
 
-
+	
 	public Long getDept_no() {
 		return dept_no;
 	}

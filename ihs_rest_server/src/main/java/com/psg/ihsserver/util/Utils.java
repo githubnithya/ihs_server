@@ -27,15 +27,17 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.log4j.Logger;
-
+import org.glassfish.jersey.server.internal.inject.ParameterInjectionBinder;
 
 import com.psg.ihsserver.bean.AppointmentBean;
 import com.psg.ihsserver.bean.DepartmentBean;
 import com.psg.ihsserver.bean.DoctorBean;
+import com.psg.ihsserver.bean.PatientBean;
 import com.psg.ihsserver.daoimpl.PatientDaoImpl;
 import com.psg.ihsserver.entity.Appointment;
 import com.psg.ihsserver.entity.Department;
 import com.psg.ihsserver.entity.Doctor;
+import com.psg.ihsserver.entity.Patient;
 import com.psg.ihsserver.exception.ApplicationException;
 
 public class Utils {
@@ -216,6 +218,30 @@ public class Utils {
 		return dept;
 	}
 
+	public static PatientBean convertToBean(Patient patient){
+		Date sqldate= new Date(patient.getDob().getTime());
+		PatientBean patientBean= new PatientBean(patient.getOnline_reg_no(), patient.getOp_code(), patient.getPatient_name(),
+				patient.getPatient_pwd(), patient.getSex(), sqldate, patient.getMarital_status(),
+				patient.getOccupation(), patient.getAadhaar_no(), patient.getAddress(), patient.getArea_name(),
+				patient.getCity_name(), patient.getState(), patient.getPincode(), patient.getPhone(),
+				patient.getMobile_no(), patient.getMail_id(), patient.getDependent_type(), patient.getDependent_name(),
+				patient.getDependent_occupation(), patient.getDependent_aadhaar_no(), patient.getDiv_code());
+		return patientBean;
+	}
+	public static AppointmentBean convertToBean(Appointment appointment){
+		
+		java.util.Date app_date =  new Date(appointment.getApp_date().getTime());
+		AppointmentBean appointmentBean = new AppointmentBean(appointment.getApp_id(), appointment.getOnline_reg_no(),
+				appointment.getOp_code(), app_date, appointment.getCons_dept(), appointment.getCons_dr_no(),
+				appointment.getSer_code(), appointment.getReceipt_code(), appointment.getCharge(),
+				appointment.getReceipt_status(), appointment.getBill_code(), appointment.getVisit_status(),
+				appointment.getApp_status(), appointment.getDiv_code(), appointment.getTx_statusMsg(), appointment.getTx_statusCode(),
+				appointment.getTx_amount(), appointment.getTx_dateTime(), appointment.getTx_merchantTxId(), appointment.getTx_merchantCode(),
+				appointment.getTx_paymentMethod(), appointment.getTx_pg_id(), appointment.getTx_refundId(), appointment.getTx_checkoutObj());
+	
+		return appointmentBean;
+	
+	}
 	public static Appointment convertToEntity(AppointmentBean appBean) {
 		Appointment app = new Appointment();
 		app.setApp_id(appBean.getApp_id());

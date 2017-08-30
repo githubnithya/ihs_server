@@ -2,8 +2,7 @@ package com.psg.ihsserver.entity;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.sql.Timestamp;
-import java.util.Date;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
